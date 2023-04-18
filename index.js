@@ -13,7 +13,6 @@ app.use(express.json());
 app.use(cors());
 
 const mongoDB = process.env.MONGO_DB;
-const mongoState = mongoose.connection.readyState;
 
 app.listen(3000, (req, res)=>{
     console.log("backend running");
