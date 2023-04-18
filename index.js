@@ -24,13 +24,6 @@ mongoose.connect(mongoDB, {
     useUnifiedTopology: true,
 }).then(console.log("connected to database")).catch((err)=> console.log(err));
 
-// If mongodb disconnects this Invokes!
-app.use((req, res, next)=>{
-    if(mongoState === 0 || mongoState === 3){
-        return next(new customErrors("MongoDB Disconnected", 500)); 
-     }
-})
-
 app.use("/api/v1",userRoute); // User Routes
 app.use("/api/v1", cms); // CMS Routes
 
