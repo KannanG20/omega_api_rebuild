@@ -3,12 +3,10 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
     firstname: {
         type: String,
-        min: [4, "First name should consist of minimum 4 characters"],
         required: true
     },
     lastname:{
         type: String,
-        min: [1, "Last name should consist of minimum 1 character"],
         required:true
     },
     email: {
@@ -32,7 +30,7 @@ const userSchema = mongoose.Schema({
     },
     message: {
         type: String,
-        required: true
+        default: null,
     },
     status: {
         type: Boolean,
