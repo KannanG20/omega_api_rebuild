@@ -11,7 +11,7 @@ const app = express();
 
 dotenv.config();
 app.use(express.json());
-app.use(cors({ origin: "https://hubnex-labs-vert.vercel.app" }));
+app.use(cors({ origin: "*" }));
 
 const mongoDB = process.env.MONGO_DB;
 
