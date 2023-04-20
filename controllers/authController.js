@@ -14,9 +14,8 @@ exports.POST_USER = async (req, res, next) => {
                 result : "PERMISSION ACCESSED"
             })
         }
-
         res.status(400).json({
-            result: "PERMISSION DENIED"
+            result: "INVALID CREDENTIALS"
         })
 
     } catch (error) {
