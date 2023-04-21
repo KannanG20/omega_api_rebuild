@@ -10,7 +10,7 @@ const auth = require("./routes/auth")
 const app = express();
 
 dotenv.config();
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 
