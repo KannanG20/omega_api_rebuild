@@ -10,10 +10,15 @@ const auth = require("./routes/auth")
 const app = express();
 
 dotenv.config();
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
-app.use(cors({ origin: "*" }));
 
 const mongoDB = process.env.MONGO_DB;
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 app.listen(3000, (req, res)=>{
     console.log("backend running");
