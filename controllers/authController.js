@@ -19,6 +19,6 @@ exports.POST_USER = async (req, res, next) => {
         })
 
     } catch (error) {
-        next(error)
+       return next(error)
     }
 }

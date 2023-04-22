@@ -63,7 +63,7 @@ exports.get_single_user = async (req, res, next)=>{
         }
         res.status(200).json(user);
     } catch (error) {
-        next(error);
+        return next(error);
     }
 }
 
@@ -83,6 +83,6 @@ exports.update_user = async (req, res, next)=>{
         res.status(200).json(getUpdatedUser);
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };

@@ -63,7 +63,7 @@ exports.get_single_company = async (req, res, next)=>{
         }
         res.status(200).json(company);
     } catch (error) {
-        next(error);
+       return next(error);
     }
 }
 
@@ -83,6 +83,6 @@ exports.update_company = async (req, res, next)=>{
         res.status(200).json(getUpdatedcompany);
 
     } catch (error) {
-        next(error);
+       return next(error);
     }
 };
