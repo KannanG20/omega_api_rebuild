@@ -12,6 +12,7 @@ const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
 const bodyParser = require('body-parser')
 const app = express();
+const serveStatic = require('serve-static');
 
 dotenv.config({path: "./vars/.env"});
 app.use(cors({ origin: "*" }));
@@ -19,7 +20,7 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
 
 const mongoDB = process.env.MONGO_DB;
@@ -32,6 +33,7 @@ await mongoose.connect(mongoDB, {
 app.listen(3000, (req, res)=>{
     console.log("backend running");
 })
+
 
 app.use("/api/v1",userRoute); // User Route
 app.use("/api/v1",companyRoute); // Company Routes 
