@@ -5,6 +5,7 @@ const cors = require("cors");
 const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middlewares/Errors");
 const cms = require("./routes/cms");
+const userRolesRoute = require("./routes/roles")
 const companyRoute = require("./routes/companyRoute");
 const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
@@ -30,6 +31,7 @@ app.use("/api/v1",companyRoute); // Company Routes
 app.use("/api/v1", auth) // Auth Route
 app.use("/api/v1", cms); // CMS Routes
 app.use("/api/v1", testimonial) // Testimonial Routes
+app.use("/api/v1", userRolesRoute)
 
 // Middleware for ErrorHandling
 app.use(errorHandler)
