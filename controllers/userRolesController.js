@@ -7,6 +7,11 @@ const customErrors = require("../utils/customError.js");
 
 exports.POST_ROLE = async (req, res, next)=> {
     try {
+         
+        let errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({error : errors.array()});
+        }
         const newUserRole = new Roles({
             fullname: req.body.fullname,
             email: req.body.email,

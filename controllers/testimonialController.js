@@ -6,10 +6,7 @@ const customErrors = require("../utils/customError.js");
 exports.POST_TESTIMONIAL = async (req, res, next)=> {
 
     try {
-        let errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({error : errors.array()});
-        }
+
         const newTesti = new Testimonial({
             description: req.body.description,
             author: req.body.author,

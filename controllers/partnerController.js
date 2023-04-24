@@ -44,7 +44,10 @@ exports.DELETE_IMAGE = async (req, res, next) => {
             throw new customErrors("Invalid Id", 400);
         }
         const deleteImg = await PartnerImage.findByIdAndDelete(_id);
-        res.status(200).send("Deleted role")
+        res.status(200).json({
+            status: "success",
+            results: "Deleted successfully"
+        })
 
     } catch (error) {
         return next(error)
