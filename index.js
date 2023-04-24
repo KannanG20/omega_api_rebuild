@@ -16,9 +16,10 @@ const app = express();
 dotenv.config();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use('/uploads', express.static('uploads'))
+
 
 const mongoDB = process.env.MONGO_DB;
 
