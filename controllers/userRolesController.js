@@ -56,6 +56,26 @@ exports.GET_ROLES = async (req, res, next)=> {
     }
 }
 
+exports.GET_SINGLE_ROLE = async (req, res, next)=> {
+    try {
+        const { _id } = req.params;
+        let validId = mongoose.isObjectIdOrHexString(_id);
+        if(!validId){
+            throw new customErrors("Invalid Id", 400);
+        }
+
+        const getUpdatedRole = await Roles.findById(_id)
+        res.status(200).json({
+            status:"success",
+            results: getUpdatedRole
+        })
+
+    } catch (error) {
+        console.log(error);
+        return next(error)
+    }
+}
+
 exports.UPDATE_ROLE = async (req, res, next) => {
     try {
         const { _id } = req.params;
