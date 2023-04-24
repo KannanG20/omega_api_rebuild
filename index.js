@@ -12,6 +12,7 @@ const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
 const bodyParser = require('body-parser')
 const app = express();
+const path = require("path")
 const serveStatic = require('serve-static');
 
 dotenv.config({path: "./vars/.env"});
