@@ -17,6 +17,7 @@ exports.POST_IMAGE = async (req, res, next) => {
         })
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
@@ -32,6 +33,7 @@ exports.GET_IMAGES = async (req, res, next)=> {
             results: data
         })
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
@@ -50,6 +52,7 @@ exports.DELETE_IMAGE = async (req, res, next) => {
         })
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }

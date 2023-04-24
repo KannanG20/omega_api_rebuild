@@ -32,6 +32,7 @@ exports.POST_ROLE = async (req, res, next)=> {
         })
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
@@ -50,6 +51,7 @@ exports.GET_ROLES = async (req, res, next)=> {
         })
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
@@ -79,6 +81,7 @@ exports.UPDATE_ROLE = async (req, res, next) => {
         })
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
@@ -96,6 +99,7 @@ exports.DELETE_ROLE = async (req, res, next) => {
         res.status(200).send("Deleted role")
 
     } catch (error) {
+        console.log(error);
         return next(error)
     }
 }
