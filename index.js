@@ -25,11 +25,13 @@ app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
 const mongoDB = process.env.MONGO_DB;
 
-await mongoose.connect(mongoDB, {
+const mongooseConnect = async ()=> {
+    await mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(console.log("connected to database")).catch((err)=> console.log(err));
-
+}
+mongooseConnect();
 app.listen(3000, (req, res)=>{
     console.log("backend running");
 })
