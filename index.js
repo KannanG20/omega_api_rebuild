@@ -24,14 +24,14 @@ app.use('/uploads', express.static('uploads'))
 
 const mongoDB = process.env.MONGO_DB;
 
-app.listen(3000, (req, res)=>{
-    console.log("backend running");
-})
-
-mongoose.connect(mongoDB, {
+await mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(console.log("connected to database")).catch((err)=> console.log(err));
+
+app.listen(3000, (req, res)=>{
+    console.log("backend running");
+})
 
 app.use("/api/v1",userRoute); // User Route
 app.use("/api/v1",companyRoute); // Company Routes 

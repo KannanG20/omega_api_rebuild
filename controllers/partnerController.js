@@ -1,4 +1,4 @@
-const { mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const PartnerImage = require("../models/partnerImages");
 const customErrors = require("../utils/customError.js");
