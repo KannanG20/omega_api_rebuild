@@ -13,7 +13,7 @@ const auth = require("./routes/auth")
 const bodyParser = require('body-parser')
 const app = express();
 
-dotenv.config();
+dotenv.config({path: "./vars/.env"});
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'))
