@@ -16,5 +16,6 @@ router.post('/user-role', validateData,userRolesController.POST_ROLE);
 router.get('/user-roles', userRolesController.GET_ROLES);
 router.put('/user-role/:_id', userRolesController.UPDATE_ROLE)
 router.delete('/user-role/:_id', userRolesController.DELETE_ROLE)
+router.get('/user-role/:_id', userRolesController.GET_SINGLE_ROLE)
 
 module.exports =router
