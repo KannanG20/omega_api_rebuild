@@ -9,22 +9,17 @@ exports.POST_IMAGE = async (req, res, next) => {
     try {
         
         const newImg = new PartnerImage({
-            image: path.join(process.env.UPLOADS_DIR, req.file.filename),
-          });
-          const saveImg = await newImg.save();
-          if (!saveImg) {
+            image: req.file.path,
+        });
+        const saveImg = await newImg.save();
+        if (!saveImg) {
             throw new customErrors("Failed to read the file", 400);
-          }
-      
-          fs.writeFileSync(
-            path.join(process.env.UPLOADS_DIR, req.file.filename),
-            req.file.buffer,
-          );
-      
-          res.status(200).json({
+        }
+        
+        res.status(200).json({
             status: "success",
-            results: saveImg,
-          });
+            data: saveImg
+        });
 
     } catch (error) {
         return next(error)
