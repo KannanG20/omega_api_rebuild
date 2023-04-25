@@ -10,7 +10,13 @@ exports.POST_IMAGE = async (req, res, next) => {
             image : req.file.path
         })
 
-        const saveImg = await newImg.save()
+        const saveImg = await newImg.save();
+        if (!saveImg) {
+            const error = new Error('Failed to save image');
+            error.statusCode = 500;
+            throw error;
+        }
+        
         res.status(200).send({
             status: "success",
             results: "Image successfully added"
