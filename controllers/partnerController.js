@@ -12,9 +12,7 @@ exports.POST_IMAGE = async (req, res, next) => {
 
         const saveImg = await newImg.save();
         if (!saveImg) {
-            const error = new Error('Failed to save image');
-            error.statusCode = 500;
-            throw error;
+            throw new customErrors("Failed to read the file", 400);
         }
         
         res.status(200).send({
