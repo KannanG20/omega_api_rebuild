@@ -6,7 +6,6 @@ const PartnerImage = require("../models/partnerImages");
 const customErrors = require("../utils/customError.js");
 const admin = require("../FirebaseInitialization")
 const bucket = admin.storage().bucket();
-const firebase = require("@firebase/storage")
 
 
 exports.POST_IMAGE = async (req, res, next) => {
