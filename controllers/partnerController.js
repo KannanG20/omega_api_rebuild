@@ -15,13 +15,12 @@ exports.POST_IMAGE = async (req, res, next) => {
             throw new customErrors("Failed to read the file", 400);
         }
         
-        res.status(200).send({
+        res.status(200).json({
             status: "success",
             results: "Image successfully added"
         })
 
     } catch (error) {
-        console.log(error);
         return next(error)
     }
 }
