@@ -6,6 +6,8 @@ const PartnerImage = require("../models/partnerImages");
 const customErrors = require("../utils/customError.js");
 const admin = require("../FirebaseInitialization")
 const bucket = admin.storage().bucket();
+const firebase = require("@firebase/storage")
+
 
 exports.POST_IMAGE = async (req, res, next) => {
   try {
@@ -24,7 +26,7 @@ exports.POST_IMAGE = async (req, res, next) => {
     });
 
     stream.on('finish', async () => {
-      const imageUrl = `https://storage.googleapis.com/${bucket.name}/${file.originalname}`;
+      const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(file.originalname)}?alt=media`;
 
       const newImg = new PartnerImage({
         image: imageUrl,
@@ -50,13 +52,11 @@ exports.POST_IMAGE = async (req, res, next) => {
 
 exports.GET_IMAGES = async (req, res, next) => {
     try {
-      const images = await PartnerImage.find({}, { _id: 0, image: 1 });
-  
-      const imageUrls = images.map((image) => image.image);
+      const images = await PartnerImage.find();
   
       res.status(200).json({
         status: 'success',
-        data: imageUrls,
+        data: images,
       });
     } catch (error) {
       return next(error);
@@ -68,21 +68,15 @@ exports.DELETE_IMAGE = async (req, res, next) => {
   try {
     const { _id } = req.params;
 
-    const image = await PartnerImage.findOneAndDelete({ _id });
+    const image = await PartnerImage.findByIdAndDelete({ _id });
 
     if (!image) {
       throw new customErrors('Image not found', 404);
     }
 
-    const imageUrl = image.image;
-
-    const file = bucket.file(imageUrl);
-
-    await file.delete();
-
     res.status(200).json({
       status: 'success',
-      data: null,
+      data: 'Deleted Partner Image',
     });
   } catch (error) {
     return next(error);
