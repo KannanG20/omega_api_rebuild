@@ -9,7 +9,6 @@ exports.POST_IMAGE = async (req, res, next) => {
         const newImg = new PartnerImage({
             image: req.file.path,
         })
-        console.log(req.file.path)
         const saveImg = await newImg.save();
         if (!saveImg) {
             throw new customErrors("Failed to read the file", 400);
@@ -17,7 +16,7 @@ exports.POST_IMAGE = async (req, res, next) => {
         
         res.status(200).json({
             status: "success",
-            results: "Image successfully added"
+            results: saveImg
         })
 
     } catch (error) {
