@@ -36,7 +36,11 @@ const user_roles = mongoose.Schema({
     user_access: [{
         type: String,
         default: "all"
-    }]
+    }],
+    status: {
+        type: Boolean,
+        default: true,
+    }
 },
 { timestamps: { createdAt: 'created_at' } }
 )

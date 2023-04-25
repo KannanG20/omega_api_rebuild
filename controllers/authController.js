@@ -25,7 +25,8 @@ exports.POST_USER = async (req, res, next) => {
                     return res.status(200).json({
                         status: "success",
                         results: "PERMISSION ACCESSED",
-                        roles: val.user_access
+                        roles: val.user_access,
+                        status: val.status
                     })
                 }
                 if((userData.email == email) && (userData.password == password)){   // DEMO CREDENTIALS IF BACKEND FAILS
