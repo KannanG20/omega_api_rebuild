@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const fs = require('fs');
+const path = require('path');
 
 const PartnerImage = require("../models/partnerImages");
 const customErrors = require("../utils/customError.js");
@@ -7,17 +9,22 @@ exports.POST_IMAGE = async (req, res, next) => {
     try {
         
         const newImg = new PartnerImage({
-            image: req.file.path,
-        })
-        const saveImg = await newImg.save();
-        if (!saveImg) {
+            image: path.join(process.env.UPLOADS_DIR, req.file.filename),
+          });
+          const saveImg = await newImg.save();
+          if (!saveImg) {
             throw new customErrors("Failed to read the file", 400);
-        }
-        
-        res.status(200).json({
+          }
+      
+          fs.writeFileSync(
+            path.join(process.env.UPLOADS_DIR, req.file.filename),
+            req.file.buffer,
+          );
+      
+          res.status(200).json({
             status: "success",
-            results: saveImg
-        })
+            results: saveImg,
+          });
 
     } catch (error) {
         return next(error)
