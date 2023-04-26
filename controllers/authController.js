@@ -1,5 +1,6 @@
 const Roles = require("../models/roles")
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt")
 
 exports.POST_USER = async (req, res, next) => {
     try {
@@ -18,15 +19,15 @@ exports.POST_USER = async (req, res, next) => {
         const roles =  await Roles.find()
         const data = roles
         let i = 0;
-
         while ( i < data.length){
-            for( const val of data){             
-                if((val.email == userData.email) && (val.password == userData.password)){
+            for( const val of data){    
+                const checkPassword = await bcrypt.compare(userData.password, val.password);         
+                if((val.email == userData.email) && (checkPassword)){
                     return res.status(200).json({
                         status: "success",
                         results: "PERMISSION ACCESSED",
                         roles: val.user_access,
-                        status: val.status
+                        status: val.status,
                     })
                 }
                 if((userData.email == email) && (userData.password == password)){   // DEMO CREDENTIALS IF BACKEND FAILS

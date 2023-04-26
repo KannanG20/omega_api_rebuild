@@ -6,7 +6,6 @@ const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middlewares/Errors");
 const cms = require("./routes/cms");
 const userRolesRoute = require("./routes/roles")
-const partners = require("./routes/Partners")
 const companyRoute = require("./routes/companyRoute");
 const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
@@ -26,6 +25,8 @@ app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
 const mongoDB = process.env.MONGO_DB;
 
+
+// Mongo DB connection 
 const mongooseConnect = async ()=> {
     await mongoose.connect(mongoDB, {
     useNewUrlParser: true,
@@ -33,6 +34,8 @@ const mongooseConnect = async ()=> {
 }).then(console.log("connected to database")).catch((err)=> console.log(err));
 }
 mongooseConnect();
+
+// Start of backend server
 app.listen(3000, (req, res)=>{
     console.log("backend running");
 })
@@ -43,8 +46,7 @@ app.use("/api/v1",companyRoute); // Company Routes
 app.use("/api/v1", auth) // Auth Route
 app.use("/api/v1", cms); // CMS Routes
 app.use("/api/v1", testimonial) // Testimonial Routes
-app.use("/api/v1", userRolesRoute)
-app.use("/api/v1", partners)
+app.use("/api/v1", userRolesRoute)  // User Roles Routes
 
 // Middleware for ErrorHandling
 app.use(errorHandler)

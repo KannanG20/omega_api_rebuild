@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt")
 
 const Roles = require("../models/roles")
 const customErrors = require("../utils/customError.js");
@@ -12,23 +13,27 @@ exports.POST_ROLE = async (req, res, next)=> {
         if(!errors.isEmpty()){
             return res.status(400).json({error : errors.array()});
         }
+        const salt = 10
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const confirmHashedPassword = await bcrypt.hash(req.body.confirm_password, salt);
+
         const newUserRole = new Roles({
             fullname: req.body.fullname,
             email: req.body.email,
             mobile: req.body.mobile,
-            password: req.body.password,
-            confirm_password: req.body.confirm_password,
+            password: hashedPassword,
+            confirm_password: confirmHashedPassword,
             user_access: req.body.user_access
         })
 
-        if(newUserRole.password !== newUserRole.confirm_password){
-            throw new customErrors("Password is not matched", 400)
+        if(req.body.password != req.body.confirm_password){
+            throw new customErrors("Password not matched", 400)
         }
 
-        const role = await newUserRole.save();
+        await newUserRole.save();
         res.status(200).json({
             status: "success",
-            results: role
+            results: "Created User Role"
         })
 
     } catch (error) {
@@ -40,7 +45,7 @@ exports.POST_ROLE = async (req, res, next)=> {
 exports.GET_ROLES = async (req, res, next)=> {
     try {
         
-        const getRoles = await Roles.find();
+        const getRoles = await Roles.find().select(['-password','-confirm_password']);
         if(!getRoles){
             throw new customErrors("Backend server is not responding", 400)
         }
@@ -64,7 +69,7 @@ exports.GET_SINGLE_ROLE = async (req, res, next)=> {
             throw new customErrors("Invalid Id", 400);
         }
 
-        const getUpdatedRole = await Roles.findById(_id)
+        const getUpdatedRole = await Roles.findById(_id).select(['-password','-confirm_password'])
         res.status(200).json({
             status:"success",
             results: getUpdatedRole
@@ -93,11 +98,10 @@ exports.UPDATE_ROLE = async (req, res, next) => {
             user_access : req.body.user_access
         }
 
-        const updateRole = await Roles.findByIdAndUpdate(_id, updateReq )
-        const getUpdatedRole = await Roles.findById(_id)
+        await Roles.findByIdAndUpdate(_id, updateReq )
         res.status(200).json({
             status:"success",
-            results: getUpdatedRole
+            results: "Updated user role"
         })
 
     } catch (error) {
@@ -115,7 +119,7 @@ exports.DELETE_ROLE = async (req, res, next) => {
             throw new customErrors("Invalid Id", 400);
         }
 
-        const deleteRole = await Roles.findByIdAndDelete(_id);
+        await Roles.findByIdAndDelete(_id);
         res.status(200).send("Deleted role")
 
     } catch (error) {

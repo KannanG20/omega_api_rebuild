@@ -42,7 +42,10 @@ exports.post_user = async (req, res, next)=>{
         })
 
         const user = await newUser.save();
-        res.status(200).json(user);
+        res.status(200).json({
+            status: "success",
+            results: "Created new request"
+        });
 
     } catch (error) {
         return next(error);
