@@ -2,7 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require('body-parser')
 const app = express();
 
 const errorHandler = require("./middlewares/Errors");
@@ -18,10 +17,6 @@ const auth = require("./routes/auth")
 dotenv.config({path: "./vars/.env"});
 app.use(cors({ origin: "*" }));
 app.use(express.json());
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
 
 const mongoDB = process.env.MONGO_DB;
 
