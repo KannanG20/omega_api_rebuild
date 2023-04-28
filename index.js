@@ -2,15 +2,18 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const userRoute = require("./routes/userRoute");
+const bodyParser = require('body-parser')
+const app = express();
+
 const errorHandler = require("./middlewares/Errors");
+
+const userRoute = require("./routes/userRoute");
 const cms = require("./routes/cms");
 const userRolesRoute = require("./routes/roles")
 const companyRoute = require("./routes/companyRoute");
 const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
-const bodyParser = require('body-parser')
-const app = express();
+
 
 dotenv.config({path: "./vars/.env"});
 app.use(cors({ origin: "*" }));

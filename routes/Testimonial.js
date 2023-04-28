@@ -3,25 +3,20 @@ const express = require("express")
 const app = express();
 
 const testimonialController = require("../controllers/testimonialController")
+const customError = require('../middlewares/Errors')
 
-const validateData = app.use('/testimonial', (req, res, next)=>{
+const validateData = app.use('/', (req, res, next)=>{
     const { body: data } = req
-
-    if(!data.description){
-        return res.status(400).json({
-            status: "failed",
-            error: "Please provide description"
-        })
-    }else if(!data.author){
-        return res.status(400).json({
-            status: "failed",
-            error: "Please provide author name"
-        })
-    }else if(!data.role){
-        return res.status(400).json({
-            status: "failed",
-            error: "Please provide author role"
-        })
+    try {
+        if(!data.description){
+           throw new customError('Description is mandatory', 400)
+        }else if(!data.author){
+            throw new customError('Author Name is mandatory', 400)
+        }else if(!data.role){
+            throw new customError('Author Role is mandatory', 400)
+        }
+    } catch (error) {
+        return next()
     }
     next();
 })
