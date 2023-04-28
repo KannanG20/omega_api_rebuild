@@ -14,8 +14,8 @@ const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
 
 
-dotenv.config({path: "./vars/.env"});
-app.use(cors({ origin: "*" }));
+dotenv.config();
+app.use(cors());
 app.use(express.json());
 
 const mongoDB = process.env.MONGO_DB;
