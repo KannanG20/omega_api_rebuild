@@ -1,18 +1,26 @@
-const customError = require('../middlewares/Errors')
+const express = require('express')
+const app = express()
 
-const validateData =  (req, res, next)=>{
+
+const ValidateData =  app.use((req, res, next)=>{
     const { body: data } = req
-    try {
         if(!data.description){
-           throw new customError('Description is mandatory', 400)
+           return res.status(400).json({
+            status: "failed",
+            error: "Description is a mandatory field"
+           })
         }else if(!data.author){
-            throw new customError('Author Name is mandatory', 400)
+            return res.status(400).json({
+                status: "failed",
+                error: "Author Name is a mandatory field"
+               })
         }else if(!data.role){
-            throw new customError('Author Role is mandatory', 400)
+            return res.status(400).json({
+                status: "failed",
+                error: "Author Role is a mandatory field"
+               })
         }
-    } catch (error) {
-        return next()
-    }
-}
+    next()
+})
 
-    module.exports = validateData
+module.exports = ValidateData

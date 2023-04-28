@@ -6,7 +6,6 @@ const bodyParser = require('body-parser')
 const app = express();
 
 const errorHandler = require("./middlewares/Errors");
-const validation = require('./middlewares/TestimonialValidation')
 
 const userRoute = require("./routes/userRoute");
 const cms = require("./routes/cms");
@@ -51,7 +50,6 @@ app.use("/api/v1", userRolesRoute)  // User Roles Routes
 
 // Middlewares
 app.use(errorHandler)
-app.use(validation)
 
 
 
