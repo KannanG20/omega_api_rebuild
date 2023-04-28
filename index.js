@@ -5,6 +5,7 @@ const cors = require("cors");
 const app = express();
 
 const errorHandler = require("./middlewares/Errors");
+const testimonialValidation = require('./middlewares/TestimonialValidation')
 
 const userRoute = require("./routes/userRoute");
 const cms = require("./routes/cms");
@@ -45,6 +46,7 @@ app.use("/api/v1", userRolesRoute)  // User Roles Routes
 
 // Middlewares
 app.use(errorHandler)
+app.use(testimonialValidation)
 
 
 
