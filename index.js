@@ -11,8 +11,6 @@ const testimonial = require("./routes/Testimonial")
 const auth = require("./routes/auth")
 const bodyParser = require('body-parser')
 const app = express();
-const path = require("path")
-const serveStatic = require('serve-static');
 
 dotenv.config({path: "./vars/.env"});
 app.use(cors({ origin: "*" }));
@@ -20,7 +18,6 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use('/uploads', serveStatic(path.join(__dirname, 'uploads')))
 
 
 const mongoDB = process.env.MONGO_DB;
