@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 
 
-const ValidateData =  app.use((req, res, next)=>{
+const ValidateData =  app.use('/testimonial',(req, res, next)=>{
     const { body: data } = req
         if(!data.description){
            return res.status(400).json({
