@@ -1,40 +1,23 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-    firstname: {
+    username: {
         type: String,
-        required: true
-    },
-    lastname:{
-        type: String,
-        required:true
-    },
-    email: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        unique: true,
-        validate: {
-            validator: function(v) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3})+$/.test(v);
-            },
-            message: "Please enter a valid email"
-        },
-        required: [true, "Email required"]
-    },
-    phoneNo: {
-        type: Number,
-        min: 10,
         required: true,
         unique: true
     },
-    message: {
+    pbId: {
         type: String,
-        default: null,
+        required: true,
+        unique: true
     },
-    status: {
+    password: {
+        type: String,
+        required: true
+    },
+    whitelist: {
         type: Boolean,
-        default: false
+        required: true
     }
 },
 { timestamps: { createdAt: 'created_at' } }

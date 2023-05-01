@@ -1,6 +1,7 @@
 const { mongoose } = require("mongoose");
 const { validationResult } = require("express-validator");
 
+const Whitelist = require('../models/whitelist')
 const User = require("../models/users.js");
 const customErrors = require("../utils/customError.js");
 
@@ -25,44 +26,83 @@ exports.get_users = async (req, res, next)=>{
 }
 
 // Post User
-exports.post_user = async (req, res, next)=>{
+exports.post_user_registration = async (req, res, next)=>{
     try {
 
-        let errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({error : errors.array()});
+        if(!req.body.username || !req.body.pbId || !req.body.password){
+            return res.status(400).json({
+                status: 'failed',
+                error: 'All fields are mandatory'
+            })
         }
+        const whitelistlogs = await Whitelist.findOne();
+        console.log(whitelistlogs);
+        const whitelistedPbs = whitelistlogs.pbId;
+        let isWhitelisted = false; // Initialize isWhitelisted to false
+
+        whitelistedPbs.forEach((pbid) => {
+        if (pbid === req.body.pbId) {
+            isWhitelisted = true;
+        }
+        });
+
+        console.log(isWhitelisted); // Output whether the ID is whitelisted or not
 
         const newUser = new User({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email,
-            phoneNo: req.body.phoneNo,
-            message: req.body.message
+            username: req.body.username,
+            pbId: req.body.pbId,
+            password: req.body.password,
+            whitelist: isWhitelisted
         })
 
         const user = await newUser.save();
         res.status(200).json({
             status: "success",
-            results: "Created new request"
+            results: user
         });
 
     } catch (error) {
+        console.log(error)
         return next(error);
+    }
+}
+
+exports.post_user_login = async (req, res, next)=>{
+    try {
+
+        const userData = {
+            pbId: req.body.pbId,
+            password: req.body.password
+        }
+
+        const checkUser = await User.findOne(userData)
+        if(!checkUser) return res.status(404).json({
+            status: 'failed',
+            error: 'Invalid credentials'
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            result: 'User found: login accepted'
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return next(error)
     }
 }
 
 // Get Single User
 exports.get_single_user = async (req, res, next)=>{
     try {
-        const { id } = req.params;
+        const { _id } = req.params;
         let validId = mongoose.isObjectIdOrHexString(id)
         if(!validId){
             throw new customErrors("Invalid Id", 400);
         }
-        let user = await User.findById(id);
+        let user = await User.findById(_id);
         if(!user) {
-            throw new customErrors(`user not found with the given id : ${id}`, 404);
+            throw new customErrors(`user not found with the given id : ${_id}`, 404);
         }
         res.status(200).json(user);
     } catch (error) {
@@ -89,3 +129,21 @@ exports.update_user = async (req, res, next)=>{
         return next(error);
     }
 };
+
+exports.delete_user = async (req, res, next)=>{
+    try {
+        
+        const { _id } = req.params;
+        const deleteUser = User.findByIdAndDelete(_id)
+        if(!deleteUser) return res.status(404).json({
+            status: 'failed',
+            error: "user not found"
+        })
+
+        return res.status(200).send("deleted user")
+
+    } catch (error) {
+        console.log(error)
+        return next(error)
+    }
+}

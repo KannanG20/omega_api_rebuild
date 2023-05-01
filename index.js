@@ -7,11 +7,8 @@ const app = express();
 const errorHandler = require("./middlewares/Errors");
 
 const userRoute = require("./routes/userRoute");
-const cms = require("./routes/cms");
-const userRolesRoute = require("./routes/roles")
-const companyRoute = require("./routes/companyRoute");
-const testimonial = require("./routes/Testimonial")
-const auth = require("./routes/auth")
+const whitelistRoute = require("./routes/whitelist")
+const livedataRoute = require('./routes/livedataRoute');
 
 
 dotenv.config();
@@ -36,12 +33,9 @@ app.listen(3000, (req, res)=>{
 })
 
 
-app.use("/api/v1",userRoute); // User Route
-app.use("/api/v1",companyRoute); // Company Routes 
-app.use("/api/v1", auth) // Auth Route
-app.use("/api/v1", cms); // CMS Routes
-app.use("/api/v1", testimonial) // Testimonial Routes
-app.use("/api/v1", userRolesRoute)  // User Roles Routes
+app.use("/api",userRoute); // User Route
+app.use("/api", whitelistRoute)  // User Roles Routes
+app.use("/api", livedataRoute)  // Live data routes
 
 // Middlewares
 app.use(errorHandler)
