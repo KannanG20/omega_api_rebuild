@@ -37,6 +37,10 @@ const livedataSchema = mongoose.Schema({
         type: Number,
         default: null
     },
+    maxsize: {
+        type: Number,
+        default: 9
+    },
     teamA: teamAdata,
     teamB: teamBdata,
     livechat: {

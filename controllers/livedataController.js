@@ -7,6 +7,7 @@ exports.post_live_data = async (req, res, next)=>{
         
         const livedatafrombs = new Livedata({
             partysize: req.body.partysize,
+            maxsize: req.body.maxsize, 
             teamA: {
                 score: req.body.teamAscore,
                 players: req.body.teamAplayers
@@ -55,6 +56,7 @@ exports.update_live_data = async (req, res, next) => {
   
       const updating_data = {
         partysize: req.body.partysize,
+        maxsize: req.body.maxsize,
         teamA: {
           teamAscore: req.body.teamA.teamAscore,
           teamAplayers: req.body.teamA.teamAplayers,
