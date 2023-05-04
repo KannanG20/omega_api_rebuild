@@ -56,19 +56,19 @@ exports.update_live_data = async (req, res, next)=> {
         const updating_data = {
             partysize: req.body.partysize,
             teamA: {
-                score: req.body.teamAscore,
-                players: req.body.teamAplayers
+                teamAscore: req.body.teamAscore,
+                teamAplayers: req.body.teamAplayers
             },
             teamB: {
-                score: req.body.teamBscore,
-                players: req.body.teamBplayers
+                teamBscore: req.body.teamBscore,
+                teamBplayers: req.body.teamBplayers
             },
             livechat: req.body.livechat
         }
         const updatelivedata = await Livedata.findByIdAndUpdate(_id, updating_data)
         return res.status(200).json({
             status: 'success',
-            result: 'updating live data'
+            result: updatelivedata
         })
 
     } catch (error) {

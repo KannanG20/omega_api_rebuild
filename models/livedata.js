@@ -1,22 +1,32 @@
 const mongoose = require("mongoose")
 
+const playersA = mongoose.Schema({
+    name: String,
+    display_id: String,
+    client: Number
+})
+const playersB = mongoose.Schema({
+    name: String,
+    display_id: String,
+    client: Number
+})
 const teamAdata = mongoose.Schema({
-    score: {
-        type:  Number,
+    teamAscore: {
+        type:  [playersA],
         default: null
     },
-    players: {
-        type: [String],
+    teamAplayers: {
+        type: [playersB],
         default: null
     } 
 })
 
 const teamBdata = mongoose.Schema({
-    score: {
+    teamBscore: {
         type:  Number,
         default: null
     },
-    players: {
+    teamBplayers: {
         type: [String],
         default: null
     } 
