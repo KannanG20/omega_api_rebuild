@@ -46,34 +46,41 @@ exports.get_live_data = async (req, res, next)=>{
     }
 }
 
-exports.update_live_data = async (req, res, next)=> {
+exports.update_live_data = async (req, res, next) => {
     try {
-        
-        const { _id } = req.params
-        let validId = mongoose.isObjectIdOrHexString(_id);
-        if(!validId){
-            throw new customErrors("Invalid Id", 400);
-        }
-        const updating_data = {
-            partysize: req.body.partysize,
-            teamA: {
-                teamAscore: req.body.teamAscore,
-                teamAplayers: req.body.teamAplayers
-            },
-            teamB: {
-                teamBscore: req.body.teamBscore,
-                teamBplayers: req.body.teamBplayers
-            },
-            livechat: req.body.livechat
-        }
-        const updatelivedata = await Livedata.findByIdAndUpdate(_id, updating_data)
-        return res.status(200).json({
-            status: 'success',
-            result: updatelivedata
-        })
-
+      const { _id } = req.params;
+      if (!mongoose.isValidObjectId(_id)) {
+        throw new customErrors("Invalid Id", 400);
+      }
+  
+      const updating_data = {
+        partysize: req.body.partysize,
+        teamA: {
+          teamAscore: req.body.teamA.teamAscore,
+          teamAplayers: req.body.teamA.teamAplayers,
+        },
+        teamB: {
+          teamBscore: req.body.teamB.teamBscore,
+          teamBplayers: req.body.teamB.teamBplayers,
+        },
+        livechat: req.body.livechat,
+      };
+  
+      const options = { new: true }; // Return the updated document
+  
+      const updatedLivedata = await Livedata.findByIdAndUpdate(_id, updating_data, options);
+  
+      if (!updatedLivedata) {
+        throw new customErrors("No document found with that ID", 404);
+      }
+  
+      return res.status(200).json({
+        status: "success",
+        result: updatedLivedata,
+      });
     } catch (error) {
-        console.log(error)
-        return next(error)
+      console.error(error);
+      return next(error);
     }
-}
+  };
+  
