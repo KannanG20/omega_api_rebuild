@@ -7,7 +7,10 @@ const statObj = mongoose.Schema({
 })
 
 const statSchema = mongoose.Schema({
-   stats: [statObj]
+   stats: {
+    type: [statObj],
+    default: null
+   }
 },
 { timestamps: { createdAt: 'created_at' } }
 )
