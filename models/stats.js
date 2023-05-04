@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const statSchema = mongoose.Schema({
     rank: Number,
     playername: String,
-    score: Number,
+    kd: Number,
 },
 { timestamps: { createdAt: 'created_at' } }
 )

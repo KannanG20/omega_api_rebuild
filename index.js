@@ -9,6 +9,7 @@ const errorHandler = require("./middlewares/Errors");
 const userRoute = require("./routes/userRoute");
 const whitelistRoute = require("./routes/whitelist")
 const livedataRoute = require('./routes/livedataRoute');
+const statsRoute = require("./routes/StatsRoute")
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.listen(3000, (req, res)=>{
 app.use("/api",userRoute); // User Route
 app.use("/api", whitelistRoute)  // User Roles Routes
 app.use("/api", livedataRoute)  // Live data routes
+app.use("/api", statsRoute)
 
 // Middlewares
 app.use(errorHandler)
