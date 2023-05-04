@@ -4,11 +4,7 @@ exports.post_stats = async (req, res, next) => {
     try {
         
         const userStats = new Stats({
-            stats: [{
-                rank: req.body.rank,
-                playername: req.body.name,
-                kd: req.body.kd 
-            }]
+            stats: req.body
         }) 
         const data = await userStats.save()
         res.status(200).json({
