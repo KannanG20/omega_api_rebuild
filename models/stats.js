@@ -1,9 +1,13 @@
 const mongoose = require('mongoose')
 
-const statSchema = mongoose.Schema({
+const statObj = mongoose.Schema({
     rank: Number,
     playername: String,
     kd: Number,
+})
+
+const statSchema = mongoose.Schema({
+   stats: [statObj]
 },
 { timestamps: { createdAt: 'created_at' } }
 )
