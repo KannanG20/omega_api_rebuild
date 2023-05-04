@@ -12,11 +12,11 @@ const playersB = mongoose.Schema({
 })
 const teamAdata = mongoose.Schema({
     teamAscore: {
-        type:  [playersA],
+        type:  Number,
         default: null
     },
     teamAplayers: {
-        type: [playersB],
+        type: [playersA],
         default: null
     } 
 })
@@ -27,7 +27,7 @@ const teamBdata = mongoose.Schema({
         default: null
     },
     teamBplayers: {
-        type: [String],
+        type: [playersB],
         default: null
     } 
 })
