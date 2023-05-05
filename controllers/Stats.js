@@ -2,25 +2,25 @@ const Stats = require("../models/stats")
 
 exports.post_stats = async (req, res, next) => {
     try {
+      // find the latest record and remove it
+      const latestStat = await Stats.findOneAndDelete().sort({ createdAt: -1 });
+  
+      // create a new record with the request body
       const newStats = new Stats({
         stats: req.body
       });
       const data = await newStats.save();
+  
       res.status(200).json({
         status: 'success',
         results: data
       });
-  
-      // delete previous record if it exists
-      const latestStat = await Stats.findOne().sort({ createdAt: -1 });
-      if (latestStat) {
-        await latestStat.remove();
-      }
     } catch (error) {
       console.log(error);
       return next(error);
     }
   }
+  
   
   
   
