@@ -11,9 +11,9 @@ exports.post_stats = async (req, res, next) => {
         results: data
       });
   
-      // delete previous record if it's older than 60 seconds
+      // delete previous record if it exists
       const latestStat = await Stats.findOne().sort({ createdAt: -1 });
-      if (latestStat && Date.now() - latestStat.createdAt.getTime() >= 60000) {
+      if (latestStat) {
         await latestStat.remove();
       }
     } catch (error) {
@@ -21,6 +21,7 @@ exports.post_stats = async (req, res, next) => {
       return next(error);
     }
   }
+  
   
   
 
