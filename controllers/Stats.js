@@ -11,28 +11,17 @@ exports.post_stats = async (req, res, next) => {
         results: data
       });
   
-      // check if 100 records exist in the database
-      const latestStats = await Stats.find().sort({ createdAt: -1 }).limit(100);
-      if (latestStats.length >= 100) {
-        // delete previous 100 records
-        await Stats.deleteMany({ createdAt: { $lte: latestStats[latestStats.length - 1].createdAt } });
-  
-        // insert new records
-        const newStatsArray = [];
-        const latestStatsIds = latestStats.map(stat => stat._id);
-        for (let i = 0; i < latestStatsIds.length; i++) {
-          newStatsArray.push({
-            _id: latestStatsIds[i],
-            stats: req.body
-          });
-        }
-        await Stats.insertMany(newStatsArray);
+      // delete previous record if it's older than 60 seconds
+      const latestStat = await Stats.findOne().sort({ createdAt: -1 });
+      if (latestStat && Date.now() - latestStat.createdAt.getTime() >= 60000) {
+        await latestStat.remove();
       }
     } catch (error) {
       console.log(error);
       return next(error);
     }
   }
+  
   
 
 exports.get_stats = async (req, res, next)=> {
