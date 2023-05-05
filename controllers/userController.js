@@ -55,10 +55,10 @@ exports.post_user_registration = async (req, res, next)=>{
             whitelist: isWhitelisted
         })
 
-        const user = await newUser.save();
+        await newUser.save();
         res.status(200).json({
             status: "success",
-            results: user
+            results: "created user"
         });
 
     } catch (error) {
@@ -75,7 +75,7 @@ exports.post_user_login = async (req, res, next)=>{
             password: req.body.password
         }
 
-        const checkUser = await User.findOne(userData)
+        const checkUser = await User.findOne(userData).select(['-password'])
         if(!checkUser) return res.status(404).json({
             status: 'failed',
             error: 'Invalid credentials'
@@ -83,7 +83,7 @@ exports.post_user_login = async (req, res, next)=>{
 
         return res.status(200).json({
             status: 'success',
-            result: 'User found: login accepted'
+            result: checkUser
         })
         
     } catch (error) {
@@ -96,7 +96,7 @@ exports.post_user_login = async (req, res, next)=>{
 exports.get_single_user = async (req, res, next)=>{
     try {
         const { _id } = req.params;
-        let validId = mongoose.isObjectIdOrHexString(id)
+        let validId = mongoose.isObjectIdOrHexString(_id)
         if(!validId){
             throw new customErrors("Invalid Id", 400);
         }
