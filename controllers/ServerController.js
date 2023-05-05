@@ -5,12 +5,12 @@ const Server = require('../models/Servers')
 exports.post_server = async (req, res, next)=> {
     try {
         
-        const Server = new Server({
+        const server = new Server({
             private: req.body.private,
             public: req.body.public
         })
 
-        await Server.save()
+        await server.save()
         res.status(200).send('created servers config')
 
     } catch (error) {
