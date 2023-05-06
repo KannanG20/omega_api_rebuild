@@ -1,5 +1,6 @@
 const { mongoose } = require("mongoose");
 const { validationResult } = require("express-validator");
+const bcrypt = require('bcrypt')
 
 const Whitelist = require('../models/whitelist')
 const User = require("../models/users.js");
@@ -9,7 +10,7 @@ const customErrors = require("../utils/customError.js");
 // Get All Users
 exports.get_users = async (req, res, next)=>{
     try {
-        const users = await User.find()
+        const users = await User.find().select(['-password'])
         if(users.length < 0){
            return res.status(200).json({
                 status : "success",
@@ -35,6 +36,7 @@ exports.post_user_registration = async (req, res, next)=>{
                 error: 'All fields are mandatory'
             })
         }
+        
         const whitelistlogs = await Whitelist.findOne();
         console.log(whitelistlogs);
         const whitelistedPbs = whitelistlogs.pbId;
@@ -45,13 +47,12 @@ exports.post_user_registration = async (req, res, next)=>{
             isWhitelisted = true;
         }
         });
-
-        console.log(isWhitelisted); // Output whether the ID is whitelisted or not
-
+        const salt = 10
+        const hashPassword = await bcrypt.hash(req.body.password, salt)
         const newUser = new User({
             username: req.body.username,
             pbId: req.body.pbId,
-            password: req.body.password,
+            password: hashPassword,
             whitelist: isWhitelisted
         })
 
@@ -67,30 +68,41 @@ exports.post_user_registration = async (req, res, next)=>{
     }
 }
 
-exports.post_user_login = async (req, res, next)=>{
+exports.post_user_login = async (req, res, next) => {
     try {
-
-        const userData = {
-            pbId: req.body.pbId,
-            password: req.body.password
-        }
-
-        const checkUser = await User.findOne(userData).select(['-password'])
-        if(!checkUser) return res.status(404).json({
-            status: 'failed',
-            error: 'Invalid credentials'
-        })
-
+      const userData = {
+        pbId: req.body.pbId,
+        password: req.body.password,
+      };
+  
+      const user = await User.findOne({ pbId: userData.pbId });
+      if (!user) {
+        return res.status(404).json({
+          status: "failed",
+          results: "INVALID CREDENTIALS",
+        });
+      }
+  
+      const checkPassword = await bcrypt.compare(userData.password, user.password);
+      if (checkPassword) {
+        // Deselect the password field before sending the response
+        user.password = undefined;
         return res.status(200).json({
-            status: 'success',
-            result: checkUser
-        })
-        
+          status: "success",
+          results: user,
+        });
+      } else {
+        return res.status(404).json({
+          status: "failed",
+          results: "INVALID CREDENTIALS",
+        });
+      }
     } catch (error) {
-        console.log(error)
-        return next(error)
+      console.log(error);
+      return next(error);
     }
-}
+  };
+  
 
 // Get Single User
 exports.get_single_user = async (req, res, next)=>{
@@ -100,7 +112,7 @@ exports.get_single_user = async (req, res, next)=>{
         if(!validId){
             throw new customErrors("Invalid Id", 400);
         }
-        let user = await User.findById(_id);
+        let user = await User.findById(_id).select(['-password']);
         if(!user) {
             throw new customErrors(`user not found with the given id : ${_id}`, 404);
         }
@@ -122,7 +134,7 @@ exports.update_user = async (req, res, next)=>{
         if(!user){
             throw new customErrors(`user not found with the given id: ${_id}`, 404);
         }
-        const getUpdatedUser = await User.findById(_id);
+        const getUpdatedUser = await User.findById(_id).select(['-password']);
         res.status(200).json(getUpdatedUser);
 
     } catch (error) {

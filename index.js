@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const jwt = require('express-jwt').expressjwt;
 
 const errorHandler = require("./middlewares/Errors");
 
@@ -19,8 +20,8 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-const mongoDB = process.env.MONGO_DB;
 
+const mongoDB = process.env.MONGO_DB;
 
 // Mongo DB connection 
 const mongooseConnect = async ()=> {

@@ -2,7 +2,7 @@ const Suggestion = require('../models/suggestion')
 
 exports.post_suggestion = async (req, res, next)=> {
     try {
-        
+
         const newSuggestion = new Suggestion({
             username: req.body.username,
             pbId: req.body.pbId,
@@ -11,6 +11,7 @@ exports.post_suggestion = async (req, res, next)=> {
 
         await newSuggestion.save()
         res.status(200).send("Posted user suggestion")
+    
     } catch (error) {
         return next(error)
     }
@@ -18,17 +19,16 @@ exports.post_suggestion = async (req, res, next)=> {
 
 exports.get_suggestions = async (req, res, next)=> {
     try {
-        
-        const suggestions = await Suggestion.find()
-        if(!suggestions){
-            return res.status(400).send("something went wrong")
-        }
-
-        res.status(200).json({
-            status: 'success',
-            results: suggestions
-        })
-
+            const suggestions = await Suggestion.find()
+            if(!suggestions){
+                return res.status(400).send("something went wrong")
+            }
+    
+            res.status(200).json({
+                status: 'success',
+                results: suggestions
+            })
+       
     } catch (error) {
         return next(error)
     }
