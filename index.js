@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const jwt = require('express-jwt').expressjwt;
 
 const errorHandler = require("./middlewares/Errors");
 
