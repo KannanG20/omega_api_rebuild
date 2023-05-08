@@ -1,5 +1,4 @@
 const { mongoose } = require("mongoose");
-const { validationResult } = require("express-validator");
 const bcrypt = require('bcrypt')
 
 const Whitelist = require('../models/whitelist')
