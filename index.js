@@ -32,7 +32,8 @@ const mongooseConnect = async ()=> {
 mongooseConnect();
 
 // Start of backend server
-app.listen(3000, (req, res)=>{
+const port = process.env.PORT || 3000;
+app.listen(port, (req, res)=>{
     console.log("backend running");
 })
 
