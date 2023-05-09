@@ -18,13 +18,13 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api",userRoute); // User Route
-app.use("/api", whitelistRoute)  // User Roles Routes
-app.use("/api", livedataRoute)  // Live data routes
-app.use("/api", statsRoute)
-app.use("/api", suggestionRoute)
-app.use("/api", reportsRoute)
-app.use("/api", serverRoute)
+// app.use("/api",userRoute); // User Route
+// app.use("/api", whitelistRoute)  // User Roles Routes
+// app.use("/api", livedataRoute)  // Live data routes
+// app.use("/api", statsRoute)
+// app.use("/api", suggestionRoute)
+// app.use("/api", reportsRoute)
+// app.use("/api", serverRoute)
 
 // Middlewares
 app.use(errorHandler)
